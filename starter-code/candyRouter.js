@@ -23,12 +23,19 @@ router.get('/', function(req,res) {
 
 router.get('/:id', function(req, res) {
 	console.log(req.params.id);
-	res.send(candies[req.params.id-1]);
+	let x = req.params.id;
+
+	for ( i = 0; i < candies.length; i++) {
+	if (x == candies[i].id) {
+		console.log('IN FOR LOOP!');
+		res.send(candies[i]);
+	} else {res.send('Error');}
+}
+
+
 });
 
 router.post('/',  function(req, res) {
-
-
 
 	console.log('req.body.id' + req.body.id);
 	console.log('req.body.name' + req.body.name);
@@ -47,6 +54,8 @@ router.post('/',  function(req, res) {
 });
 
 router.put('/:id', function(req, res) {
+	let x = req.params.id;
+	console.log('x: ' + x);
 	console.log('req.body.id' + req.body.id);
 	console.log('req.body.name' + req.body.name);
 	console.log('req.body.color' + req.body.color);
@@ -56,14 +65,28 @@ router.put('/:id', function(req, res) {
 		name: req.body.name,
 		color: req.body.color
 	};
+
+	for ( i = 0; i < candies.length; i++) {
+		if (x == candies[i].id) {
+			console.log('IN FOR LOOP!');
+			candies[i] = newCandy;
+		} else {}
+	}
+	res.send(newCandy);
 });
 
-router.delete('/', function(req, res) {
+router.delete('/:id', function(req, res) {
+	let x = req.params.id;
 
-	console.log((JSON.stringify(res)));
-	// candies.push
+	for ( i = 0; i < candies.length; i++) {
+		if (x == candies[i].id) {
+			console.log('In delete for loop!');
+			candies.splice(i, 1);
+			console.log('candies: ' + JSON.stringify((candies)));
+			return res.send('"message": "deleted"');
+		} else { let error = 'not found';}
+	} 
+	if(error) {res.send(error);}
 });
-
-// Fill out the rest of the routes here
 
 module.exports = router;
